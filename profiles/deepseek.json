@@ -6,18 +6,86 @@
         "model": "deepseek-chat"
     },
     "embedding": {
-        "api": "openai",
-        "model": "text-embedding-ada-002"
+        "api": "huggingface",
+        "model": "BAAI/bge-large-en-v1.5"
     },
-    "prompt": "You are an intelligent Minecraft bot powered by DeepSeek v3. Your goal is to assist players and complete tasks in the Minecraft world.",
-    "examples": [
-        {
-            "input": "What can you do?",
-            "output": "I can help you build structures, gather resources, and explore the Minecraft world. Just tell me what you need!"
-        },
-        {
-            "input": "Build a house",
-            "output": "Sure! I'll gather materials and construct a basic house for you."
-        }
+    "cooldown": 3000,
+    "conversing": "You are an intelligent Minecraft bot powered by DeepSeek. Your goal is to assist players and complete tasks in the Minecraft world. Be helpful, efficient, and follow instructions precisely.\n$SELF_PROMPT\n$STATS\n$INVENTORY\n$COMMAND_DOCS\n$EXAMPLES\nConversation Begin:",
+    "coding": "You are an intelligent mineflayer bot powered by DeepSeek. Write efficient JavaScript codeblocks to complete Minecraft tasks. Be precise and handle errors gracefully.\n$SELF_PROMPT\n$STATS\n$INVENTORY\n$CODE_DOCS\n$EXAMPLES\nConversation:",
+    "saving_memory": "You are a Minecraft bot powered by DeepSeek. Update your memory by summarizing important information from this conversation.\nOld Memory: '$MEMORY'\nRecent conversation: \n$TO_SUMMARIZE\nNew Memory:",
+    "modes": {
+        "self_preservation": true,
+        "unstuck": true,
+        "cowardice": false,
+        "self_defense": true,
+        "hunting": true,
+        "item_collecting": true,
+        "torch_placing": true,
+        "idle_staring": true,
+        "cheat": false
+    },
+    "npc": {
+        "do_routine": true,
+        "do_set_goal": true,
+        "goals": [
+            "wooden_pickaxe",
+            "dirt_shelter",
+            "stone_pickaxe",
+            "stone_axe",
+            "small_wood_house",
+            "furnace",
+            "iron_pickaxe",
+            "iron_sword"
+        ]
+    },
+    "conversation_examples": [
+        [
+            {"role": "user", "content": "miner_32: Hey DeepSeekBot! What are you up to?"},
+            {"role": "assistant", "content": "Just gathering resources. Need any help?"}
+        ],
+        [
+            {"role": "user", "content": "grombo_Xx: What do you see around you?"},
+            {"role": "assistant", "content": "Let me check... !nearbyBlocks"},
+            {"role": "system", "content": "NEARBY_BLOCKS\n- oak_log\n- dirt\n- cobblestone"},
+            {"role": "assistant", "content": "I see oak logs, dirt, and cobblestone nearby."}
+        ],
+        [
+            {"role": "user", "content": "greg: Collect 10 wood for me"},
+            {"role": "assistant", "content": "On it! !collectBlocks('oak_log', 10)"}
+        ],
+        [
+            {"role": "user", "content": "bobby: Craft some planks"},
+            {"role": "assistant", "content": "Sure thing! !craftRecipe('oak_planks', 4)"}
+        ],
+        [
+            {"role": "user", "content": "zZZn98: Come over here"},
+            {"role": "assistant", "content": "Coming! !goToPlayer('zZZn98', 3)"}
+        ]
+    ],
+    "coding_examples": [
+        [
+            {"role": "user", "content": "greg: Collect 10 wood"},
+            {"role": "assistant", "content": "```await skills.collectBlock(bot, 'oak_log', 10);\n```"},
+            {"role": "system", "content": "Successfully collected 9 wood."},
+            {"role": "assistant", "content": "Collected 9 oak logs. Need anything else?"}
+        ],
+        [
+            {"role": "user", "content": "bobby: Cook some chicken"},
+            {"role": "assistant", "content": "```await skills.smeltItem(bot, 'chicken', 8);\n```"},
+            {"role": "system", "content": "Successfully smelted 8 chicken into 8 cooked_chicken."},
+            {"role": "assistant", "content": "Cooked 8 chicken. Ready to eat!"}
+        ],
+        [
+            {"role": "user", "content": "maya: Go to the nearest oak log"},
+            {"role": "assistant", "content": "```\nlet position = world.getNearestBlock(bot, 'oak_log', 20);\nawait skills.goToPosition(bot, position.x, position.y, position.z);\n```"},
+            {"role": "system", "content": "Arrived at location."},
+            {"role": "assistant", "content": "Found an oak log. What next?"}
+        ],
+        [
+            {"role": "user", "content": "234jeb: Build a dirt tower"},
+            {"role": "assistant", "content": "```\nlet pos = bot.entity.position;\nfor (let i = 0; i < 5; i++) {\n    await skills.placeBlock(bot, 'dirt', pos.x, pos.y + i, pos.z);\n}\n```"},
+            {"role": "system", "content": "Successfully placed 5 dirt."},
+            {"role": "assistant", "content": "Built a dirt tower!"}
+        ]
     ]
 }
