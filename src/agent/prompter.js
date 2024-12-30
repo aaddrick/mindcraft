@@ -107,6 +107,11 @@ export class Prompter {
         else if (typeof embedding === 'string' || embedding instanceof String)
             embedding = {api: embedding};
 
+        // Set default embedding model to BGE if using Hugging Face
+        if (embedding.api === 'huggingface' && !embedding.model) {
+            embedding.model = 'BAAI/bge-large-en-v1.5';
+        }
+
         console.log('Using embedding settings:', embedding);
 
         try {
@@ -120,6 +125,8 @@ export class Prompter {
                 this.embedding_model = new Local(embedding.model, embedding.url);
             else if (embedding.api === 'qwen')
                 this.embedding_model = new Qwen(embedding.model, embedding.url);
+            else if (embedding.api === 'huggingface')
+                this.embedding_model = new HuggingFace(embedding.model, embedding.url);
             else {
                 this.embedding_model = null;
                 console.log('Unknown embedding: ', embedding ? embedding.api : '[NOT SPECIFIED]', '. Using word overlap.');
