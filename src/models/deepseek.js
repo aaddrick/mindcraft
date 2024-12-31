@@ -1,19 +1,18 @@
 import OpenAIApi from 'openai';
-import { getKey, hasKey } from '../utils/keys.js';
+import { getKey } from '../utils/keys.js';
 import { strictFormat } from '../utils/text.js';
 
-export class GPT {
+export class DeepSeek {
     constructor(model_name, url) {
-        this.model_name = model_name;
+        this.model_name = model_name || "deepseek-chat"; // Default to DeepSeek model
 
         let config = {};
         if (url)
             config.baseURL = url;
+        else
+            config.baseURL = 'https://api.deepseek.com'; // Default DeepSeek API URL
 
-        if (hasKey('DEEPSEEK_ORG_ID'))
-            config.organization = getKey('DEEPSEEK_ORG_ID');
-
-        config.apiKey = getKey('DEEPSEEK_API_KEY');
+        config.apiKey = getKey('DEEPSEEK_API_KEY'); // Use DeepSeek API key
 
         this.openai = new OpenAIApi(config);
     }
@@ -22,7 +21,7 @@ export class GPT {
         let messages = [{'role': 'system', 'content': systemMessage}].concat(turns);
 
         const pack = {
-            model: this.model_name || "gpt-3.5-turbo",
+            model: this.model_name,
             messages,
             stop: stop_seq,
         };
@@ -33,12 +32,11 @@ export class GPT {
 
         let res = null;
         try {
-            console.log('Awaiting openai api response...')
-            // console.log('Messages:', messages);
+            console.log('Awaiting DeepSeek API response...');
             let completion = await this.openai.chat.completions.create(pack);
             if (completion.choices[0].finish_reason == 'length')
                 throw new Error('Context length exceeded'); 
-            console.log('Received.')
+            console.log('Received.');
             res = completion.choices[0].message.content;
         }
         catch (err) {
@@ -54,12 +52,8 @@ export class GPT {
     }
 
     async embed(text) {
-        const embedding = await this.openai.embeddings.create({
-            model: this.model_name || "text-embedding-3-small",
-            input: text,
-            encoding_format: "float",
-        });
-        return embedding.data[0].embedding;
+        // DeepSeek does not provide embeddings, so this method is unused
+        throw new Error('DeepSeek does not support embeddings. Use Hugging Face embeddings instead.');
     }
 }
 
