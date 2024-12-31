@@ -10,10 +10,10 @@ export class GPT {
         if (url)
             config.baseURL = url;
 
-        if (hasKey('OPENAI_ORG_ID'))
-            config.organization = getKey('OPENAI_ORG_ID');
+        if (hasKey('DEEPSEEK_ORG_ID'))
+            config.organization = getKey('DEEPSEEK_ORG_ID');
 
-        config.apiKey = getKey('OPENAI_API_KEY');
+        config.apiKey = getKey('DEEPSEEK_API_KEY');
 
         this.openai = new OpenAIApi(config);
     }
