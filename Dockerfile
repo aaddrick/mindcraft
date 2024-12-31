@@ -8,7 +8,8 @@ RUN python3 -m venv /app/venv
 ENV PATH="/app/venv/bin:$PATH"
 
 # Install Python dependencies for SentenceTransformer
-RUN /app/venv/bin/pip install torch sentence-transformers
+RUN /app/venv/bin/python3 -m pip install --upgrade pip && \
+    /app/venv/bin/python3 -m pip install torch sentence-transformers
 
 # Copy app files
 COPY . .
