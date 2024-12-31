@@ -1,11 +1,18 @@
 import { spawn } from 'child_process';
 import { mainProxy } from './main_proxy.js';
+import { createEmbeddingModel } from '../models/index.js';
 
 export class AgentProcess {
     start(profile, load_memory=false, init_message=null, count_id=0, task_path=null, task_id=null) {
         this.profile = profile;
         this.count_id = count_id;
         this.running = true;
+
+        // Initialize embedding model from profile
+        const profileData = JSON.parse(profile);
+        if (profileData.embedding) {
+            this.embeddingModel = createEmbeddingModel(profileData.embedding);
+        }
 
         let args = ['src/process/init_agent.js', this.name];
         args.push('-p', profile);
