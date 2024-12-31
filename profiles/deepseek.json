@@ -2,7 +2,7 @@
     "name": "DeepSeekBot",
     "model": {
         "api": "deepseek",
-        "url": "https://api.deepseek.com/v1",
+        "url": "https://api.deepseek.com/",
         "model": "deepseek-chat"
     },
     "embedding": {
