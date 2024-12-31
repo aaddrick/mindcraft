@@ -121,6 +121,8 @@ export class Prompter {
                 this.embedding_model = new Local(embedding.model, embedding.url);
             else if (embedding.api === 'qwen')
                 this.embedding_model = new Qwen(embedding.model, embedding.url);
+            else if (embedding.api === 'huggingface')
+                this.embedding_model = createEmbeddingModel(embedding);
             else {
                 this.embedding_model = null;
                 console.log('Unknown embedding: ', embedding ? embedding.api : '[NOT SPECIFIED]', '. Using word overlap.');
