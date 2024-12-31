@@ -1,4 +1,5 @@
 import { spawn } from 'child_process';
+import { readFileSync } from 'fs';
 import { mainProxy } from './main_proxy.js';
 import { createEmbeddingModel } from '../models/index.js';
 
@@ -8,8 +9,8 @@ export class AgentProcess {
         this.count_id = count_id;
         this.running = true;
 
-        // Initialize embedding model from profile
-        const profileData = JSON.parse(profile);
+        // Read the profile file and parse it as JSON
+        const profileData = JSON.parse(readFileSync(profile, 'utf8'));
         if (profileData.embedding) {
             this.embeddingModel = createEmbeddingModel(profileData.embedding);
         }
