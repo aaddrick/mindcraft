@@ -7,8 +7,8 @@ RUN apt-get update && apt-get install -y \
     g++ \
     make
 
-# Install Python dependencies
-RUN pip3 install --no-cache-dir torch sentence-transformers
+# Install Python dependencies with verbose output
+RUN pip3 install --no-cache-dir --verbose torch sentence-transformers
 
 # Copy app files
 COPY . .
