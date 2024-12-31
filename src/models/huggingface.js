@@ -39,12 +39,14 @@ export class HuggingFace {
     }
 
     async embed(text) {
+        console.log('Generating Hugging Face embedding for:', text.substring(0, 50) + '...'); // Debugging line
         try {
             // Use the feature-extraction endpoint for embeddings
             const embedding = await this.huggingface.featureExtraction({
                 model: this.model_name || 'BAAI/bge-large-en-v1.5', // Use the specified model or default
                 inputs: text
             });
+            console.log('Successfully generated embedding:', embedding.length, 'dimensions');
             return embedding;
         } catch (err) {
             console.error('Hugging Face embedding error:', err);
