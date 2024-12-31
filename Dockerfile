@@ -10,4 +10,6 @@ RUN pip3 install -r requirements.txt
 # Copy app files
 COPY . .
 
+ENV NODE_ENV=docker
+
 CMD ["node", "main.js"]

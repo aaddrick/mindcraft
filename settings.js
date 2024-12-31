@@ -1,7 +1,7 @@
 export default 
 {
     "minecraft_version": "1.20.4", // supports up to 1.21.1
-    "host": "127.0.0.1", // or "localhost", "your.ip.address.here"
+    "host": process.env.NODE_ENV === 'docker' ? "host.docker.internal" : "127.0.0.1", // Use host.docker.internal in Docker, localhost otherwise
     "port": 55916,
     "auth": "offline", // or "microsoft"
 
