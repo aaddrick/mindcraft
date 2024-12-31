@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import { readFileSync } from 'fs';
 import { mainProxy } from './main_proxy.js';
-import { createEmbeddingModel } from '../models/index.js';
+import { createEmbeddingModel } from '../models/huggingface.js';
 
 export class AgentProcess {
     start(profile, load_memory=false, init_message=null, count_id=0, task_path=null, task_id=null) {
