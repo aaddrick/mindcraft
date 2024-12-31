@@ -39,6 +39,16 @@ export class HuggingFace {
     }
 
     async embed(text) {
-        throw new Error('Embeddings are not supported by HuggingFace.');
+        try {
+            // Use the feature-extraction endpoint for embeddings
+            const embedding = await this.huggingface.featureExtraction({
+                model: this.model_name || 'BAAI/bge-large-en-v1.5', // Use the specified model or default
+                inputs: text
+            });
+            return embedding;
+        } catch (err) {
+            console.error('Hugging Face embedding error:', err);
+            throw new Error('Failed to get embedding from Hugging Face');
+        }
     }
 }
