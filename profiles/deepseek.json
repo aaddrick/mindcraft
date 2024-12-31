@@ -1,5 +1,5 @@
 {
-    "name": "DeepSeekBot",
+    "name": "josh",
     "model": {
         "api": "deepseek",
         "url": "https://api.deepseek.com/",
