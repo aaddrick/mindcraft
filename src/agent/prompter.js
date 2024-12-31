@@ -101,7 +101,7 @@ export class Prompter {
             if (chat.api !== 'ollama' && chat.api !== 'deepseek')
                 embedding = {api: chat.api};
             else if (chat.api === 'deepseek')
-                embedding = {api: 'openai', model: 'text-embedding-ada-002'}; // Default to OpenAI embeddings for DeepSeek
+                embedding = {api: 'huggingface', model: 'BAAI/bge-large-en-v1.5'}; // Default to Hugging Face embeddings for DeepSeek
             else
                 embedding = {api: 'none'};
         }
