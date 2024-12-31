@@ -25,8 +25,8 @@ RUN python3 -c "import torch; print(torch.__version__)" && \
 RUN which python3 && which pip3
 RUN ls -la /app
 
-# Copy app files
-COPY . .
+# Set working directory
+WORKDIR /app
 
 ENV NODE_ENV=docker
 

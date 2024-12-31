@@ -4,8 +4,6 @@ services:
   app:
     image: node:latest
     working_dir: /app
-    volumes:
-      - .:/app
     command: node main.js
     ports:
       - "3000-3003:3000-3003" # see the view from the camera mounted on your bot head: http://localhost:3000/
