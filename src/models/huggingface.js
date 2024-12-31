@@ -1,24 +1,21 @@
-import { SentenceTransformer } from 'sentence-transformers';
-import { getKey } from '../utils/keys.js';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+const execAsync = promisify(exec);
 
 export class HuggingFace {
-    constructor(model_name, url) {
-        this.model_name = model_name.replace('huggingface/', '');
-        this.url = url;
-
-        // Load the local model
-        this.model = new SentenceTransformer(this.model_name || 'BAAI/bge-large-en-v1.5');
-    }
-
-    async sendRequest(turns, systemMessage) {
-        // Not used for embeddings, but required for interface compatibility
-        return 'Local model does not support chat requests';
+    constructor(model_name) {
+        this.model_name = model_name.replace('huggingface/', '') || 'BAAI/bge-large-en-v1.5';
     }
 
     async embed(text) {
         console.log('Generating local embedding for:', text.substring(0, 50) + '...');
         try {
-            const embeddings = await this.model.encode(text);
+            // Call the Python script to generate embeddings
+            const { stdout } = await execAsync(
+                `python3 -c "from sentence_transformers import SentenceTransformer; import sys; model = SentenceTransformer('${this.model_name}'); print(model.encode(sys.argv[1]).tolist())" "${text}"`,
+                { env: { PATH: `/app/venv/bin:${process.env.PATH}` } }
+            );
+            const embeddings = JSON.parse(stdout);
             console.log('Successfully generated embedding:', embeddings.length, 'dimensions');
             return embeddings;
         } catch (err) {
