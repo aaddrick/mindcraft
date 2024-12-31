@@ -1,10 +1,14 @@
 FROM node:latest
 
-# Install Python and pip
-RUN apt-get update && apt-get install -y python3 python3-pip
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    g++ \
+    make
 
-# Install Python dependencies for SentenceTransformer globally
-RUN pip3 install torch sentence-transformers
+# Install Python dependencies
+RUN pip3 install --no-cache-dir torch sentence-transformers
 
 # Copy app files
 COPY . .
