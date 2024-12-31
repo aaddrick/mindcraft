@@ -71,7 +71,7 @@ import { strictFormat } from '../utils/text.js';
 
 export class DeepSeek {
     constructor(model_name, url) {
-        this.model_name = model_name;
+        this.model_name = model_name || "deepseek-chat"; // Default to DeepSeek model
 
         let config = {};
         if (url)
@@ -119,11 +119,7 @@ export class DeepSeek {
     }
 
     async embed(text) {
-        const embedding = await this.openai.embeddings.create({
-            model: this.model_name || "text-embedding-3-small", // Default embedding model
-            input: text,
-            encoding_format: "float",
-        });
-        return embedding.data[0].embedding;
+        // DeepSeek does not provide embeddings, so this method is unused
+        throw new Error('DeepSeek does not support embeddings. Use Hugging Face embeddings instead.');
     }
 }
