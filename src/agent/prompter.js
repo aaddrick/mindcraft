@@ -12,7 +12,7 @@ import { ReplicateAPI } from '../models/replicate.js';
 import { Local } from '../models/local.js';
 import { Novita } from '../models/novita.js';
 import { GroqCloudAPI } from '../models/groq.js';
-import { HuggingFace, createEmbeddingModel } from '../models/huggingface.js';
+import HuggingFace, { createEmbeddingModel } from '../models/huggingface.js';
 import { Qwen } from "../models/qwen.js";
 import { Grok } from "../models/grok.js";
 import { DeepSeek } from "../models/deepseek.js";
