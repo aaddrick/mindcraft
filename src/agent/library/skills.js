@@ -1042,9 +1042,17 @@ export async function goToPlayer(bot, username, distance=3) {
 
     const move = new pf.Movements(bot);
     bot.pathfinder.setMovements(move);
-    await bot.pathfinder.goto(new pf.goals.GoalFollow(player, distance), true);
-
-    log(bot, `You have reached ${username}.`);
+    try {
+        await bot.pathfinder.goto(new pf.goals.GoalFollow(player, distance), true);
+        log(bot, `You have reached ${username}.`);
+        return true;
+    } catch (err) {
+        if (err.name === 'PathStopped') {
+            log(bot, `Pathfinding was interrupted before reaching ${username}.`);
+            return false;
+        }
+        throw err; // Re-throw other errors
+    }
 }
 
 
