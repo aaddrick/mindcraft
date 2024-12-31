@@ -12,8 +12,7 @@ export default class HuggingFace {
         try {
             // Call the Python script to generate embeddings
             const { stdout } = await execAsync(
-                `python3 -c "from sentence_transformers import SentenceTransformer; import sys; model = SentenceTransformer('${this.model_name}'); print(model.encode(sys.argv[1]).tolist())" "${text}"`,
-                { env: { PATH: `/app/venv/bin:${process.env.PATH}` } }
+                `/app/venv/bin/python3 -c "from sentence_transformers import SentenceTransformer; import sys; model = SentenceTransformer('${this.model_name}'); print(model.encode(sys.argv[1]).tolist())" "${text}"`
             );
             const embeddings = JSON.parse(stdout);
             console.log('Successfully generated embedding:', embeddings.length, 'dimensions');
