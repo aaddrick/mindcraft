@@ -948,12 +948,20 @@ export async function goToPosition(bot, x, y, z, min_distance=2) {
         return true;
     }
     bot.pathfinder.setMovements(new pf.Movements(bot));
-    await bot.pathfinder.goto(new pf.goals.GoalNear(x, y, z, min_distance));
-    log(bot, `You have reached at ${x}, ${y}, ${z}.`);
-    return true;
+    try {
+        await bot.pathfinder.goto(new pf.goals.GoalNear(x, y, z, min_distance));
+        log(bot, `You have reached at ${x}, ${y}, ${z}.`);
+        return true;
+    } catch (err) {
+        if (err.name === 'PathStopped') {
+            log(bot, `Pathfinding was interrupted before reaching ${x}, ${y}, ${z}.`);
+            return false;
+        }
+        throw err; // Re-throw other errors
+    }
 }
 
-export async function goToNearestBlock(bot, blockType,  min_distance=2, range=64) {
+export async function goToNearestBlock(bot, blockType, min_distance=2, range=64) {
     /**
      * Navigate to the nearest block of the given type.
      * @param {MinecraftBot} bot, reference to the minecraft bot.
@@ -966,7 +974,7 @@ export async function goToNearestBlock(bot, blockType,  min_distance=2, range=64
      * **/
     const MAX_RANGE = 512;
     if (range > MAX_RANGE) {
-        log(bot, `Maximum search range capped at ${MAX_RANGE}. `);
+        log(bot, `Maximum search range capped at ${MAX_RANGE}.`);
         range = MAX_RANGE;
     }
     let block = world.getNearestBlock(bot, blockType, range);
@@ -975,9 +983,16 @@ export async function goToNearestBlock(bot, blockType,  min_distance=2, range=64
         return false;
     }
     log(bot, `Found ${blockType} at ${block.position}.`);
-    await goToPosition(bot, block.position.x, block.position.y, block.position.z, min_distance);
-    return true;
-    
+    try {
+        await goToPosition(bot, block.position.x, block.position.y, block.position.z, min_distance);
+        return true;
+    } catch (err) {
+        if (err.name === 'PathStopped') {
+            log(bot, `Pathfinding was interrupted before reaching ${blockType}.`);
+            return false;
+        }
+        throw err; // Re-throw other errors
+    }
 }
 
 export async function goToNearestEntity(bot, entityType, min_distance=2, range=64) {
